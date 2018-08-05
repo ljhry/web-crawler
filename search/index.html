@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <title>Document</title>
+    <style>
+        .input-group {
+            max-width: 450px;
+            margin-top: 48px;
+            margin-left: 15px
+        }
+
+        .myfont {
+            font-size: 22px;
+        }
+
+        .a {
+            float: left;
+            /* margin-bottom: 200px */
+        }
+
+        #message {
+            width: 100%;
+            margin-top: 120px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header a">
+            <span>
+                <img src="./index.jpg" alt="" width="50px">
+                <span class="myfont">IMUT搜索小系统</span>
+            </span>
+        </div>
+        <div class="input-group a">
+            <input type="text" class="form-control" id="exampleInputAmount" placeholder="Search" name="title">
+            <span class="input-group-btn">
+                <button type="submit" class="btn btn-default btn-primary" id="submit">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </span>
+        </div>
+        <div id="message"></div>
+    </div>
+</body>
+<script>
+    document.onkeydown = function(e) {
+    e = e||window.event
+    if ((e.keyCode || e.which || e.charCode) == 13) {
+        document.getElementById("submit").click(); //loginButtonId为button登录按钮的ID  
+    }
+}
+    
+    $(function () {
+        $("#submit").click(function () {
+            var title = $(".form-control").val();
+
+            function isLowerCase(ch) {
+                return ch >= 'a' && ch <= 'z'
+            }
+            if (title == '') {
+                alert("请输入要查询的内容！");
+                return;
+            }
+            if (isLowerCase(title)){
+                alert('输入不合法');
+                return;
+            }
+                $.ajax({
+                    url: 'index.php',
+                    type: 'get',
+                    data: 'title=' + title,
+                    success: function (data) {
+                        // alert(data[6000])
+                        var reg = new RegExp(title, "g");
+                        var regexp1 = new RegExp("/g", "g");
+                        // var regexp2 = new RegExp("/", "g");
+                        // var reg = JSON.stringify (reg)
+                        // var reg = reg.replace("/","");
+                        // var reg = reg.replace("g","");
+                        // alert(reg)
+                        // return false;
+                        // // data=data.replace(title, "<span style='color:red;'>" + title + "</span>");
+                        var data = data.replace(reg, "<span style='color:red;'>" +reg+"</span>");
+                        // alert(data)
+                        // var data = data.replace('/',"");
+                        // alert(data)
+                        var data1 = data.replace(regexp1,"");
+                        // var data2 = data1.replace(regexp2,"");
+                        document.getElementById('message').innerHTML = data1
+                    },
+                    error: function (data) {
+                        console.log("异常");
+                    }
+                });
+        });
+    });
+</script>
+
+</html>

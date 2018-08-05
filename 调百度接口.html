@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <title>anchor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #wei {
+            width: 500px;
+            height: 600px;
+            margin: 0 auto;
+            border: 0px solid gray;
+        }
+
+        #wei input {
+            width: 476px;
+            height: 50px;
+            line-height: 50px;
+            padding-left: 20px;
+            font-size: 16px;
+        }
+
+        #wei ul {
+            height: auto;
+            border: 1px solid #ccc;
+            display: none;
+        }
+
+        #wei ul li {
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            text-indent: 10px;
+            font-size: 16px;
+            list-style: none;
+        }
+
+        #wei ul li a {
+            text-decoration: none;
+        }
+
+        #wei ul li:hover {
+            display: block;
+            background: #ccc;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body ng-controller="show">
+    <div id="wei">
+        <input type="text" id="text">
+        <ul id="list"></ul>
+    </div>
+    <script type="text/javascript">
+        var txt = document.getElementById("text");
+        var oUl = document.getElementById("list");
+        txt.onkeyup = function () {
+            var val = txt.value;
+            var oScript = document.createElement("script"); //动态创建script标签
+            oScript.src = "https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd=" + val + "&cb=callback";
+            //添加链接及回调函数
+            document.body.appendChild(oScript); //添加script标签
+            document.body.removeChild(oScript); //删除script标签
+        }
+        //回调函数
+        function callback(data) {
+            var str = "";
+            for (var i = 0; i < data.s.length; i++) {
+                str += "<li><a href=\"https://www.baidu.com/s?wd=" + data.s[i] + "\">" + data.s[i] + "</a></li>";
+            }
+            //console.log(str);
+            oUl.innerHTML = str;
+            oUl.style.display = "block";
+
+        }
+    </script>
+</body>
+
+</html>
